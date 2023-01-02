@@ -7,7 +7,6 @@ ctx.canvas.height = window.innerHeight;
 
 var allowColorVariation = false
 document.body.addEventListener("click", () => {allowColorVariation = !allowColorVariation})
-allowColorVariation = false
 
 var baseLightning = {
     X: window.innerWidth / 2,
