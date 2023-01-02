@@ -5,6 +5,10 @@ ctx.canvas.width  = window.innerWidth;
 ctx.canvas.height = window.innerHeight;
 
 
+var allowColorVariation = false
+document.body.addEventListener("click", () => {allowColorVariation = !allowColorVariation})
+allowColorVariation = false
+
 var baseLightning = {
     X: window.innerWidth / 2,
     Y: window.innerHeight / 2,
@@ -38,18 +42,20 @@ function MainLoop() {
 
         if (Math.floor(Math.random() * 100) == 0) {
             let newLightning = {...lightning}
-            if (Math.floor(Math.random() * 10) == 0) { 
-                newLightning.Lightness -= 2
-            }
-            else {
-            newLightning.Lightness = 45
-            newLightning.Hue += Math.floor(Math.random() * 31) - 15
+            if (allowColorVariation) {
+                if (Math.floor(Math.random() * 10) == 0) { 
+                    newLightning.Lightness -= 2
+                }
+                else {
+                newLightning.Lightness = 45
+                newLightning.Hue += Math.floor(Math.random() * 31) - 15
+                }
             }
             lightningArray.push(newLightning)
         }
     })
+
     maxLiving = 4000
-    console.log(lightningArray.length)
     if (lightningArray.length > maxLiving) {
         lightningArray = lightningArray.slice(maxLiving / 2, maxLiving)
     }
