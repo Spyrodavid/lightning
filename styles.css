@@ -1,13 +1,23 @@
 body {
     margin: 0;
-    background-color: grey;
+    background-color: black;
+    overflow: hidden;
 }
 
-.dot {
-  height: 25px;
-  width: 25px;
-  background-color: #bbb;
+/*
+#nextButton {
+  color: white;
+  position: fixed;
+}
+
+.circle {
+  position: fixed;
+  bottom: 5vmin;
+  right: 5vmin;
+  border: 5px solid white;
   border-radius: 50%;
-  display: inline-block;
+  width: 10vmin;
+  height: 10vmin;
+  opacity: .5;
+  background-color: transparent;
 }
-

@@ -3,7 +3,6 @@ var day = new dayCanvas(
         
 
 
-
 const canvas = document.getElementById("canvas-Jan2");
 const ctx = canvas.getContext("2d");
 
