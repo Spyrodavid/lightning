@@ -1,6 +1,5 @@
-var day = new dayCanvas(
+var day = new dayCanvas(document.getElementById("canvas-Jan1"),
     () => {
-        
 const canvas = document.getElementById("canvas-Jan1");
 const ctx = canvas.getContext("2d");
 
@@ -24,9 +23,12 @@ var lightningArray = [baseLightning]
 ctx.fillStyle = "black";
 ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
 
-// mainloop
-var i = 0
 function MainLoop() {
+
+    if (canvas.classList.contains("paused")) {
+        setTimeout(MainLoop, 10)
+        return
+    }
 
     lightningArray.forEach(lightning => {
         ctx.beginPath();
@@ -65,12 +67,12 @@ function MainLoop() {
         data[i + 2] = Math.max(Math.floor(data[i + 2] * .99), 0); // blue
     }
     ctx.putImageData(imageData, 0, 0);
-
+ 
     setTimeout(MainLoop, 10)
+
 }
-
-
 MainLoop()
-
-    }
+}   
 )
+
+canvasDayList.push(day)

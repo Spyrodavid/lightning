@@ -1,5 +1,5 @@
-var day = new dayCanvas(
-    () => {
+var day = new dayCanvas(document.getElementById("canvas-Jan2"),
+    (mainLoop) => {
         
 
 
@@ -58,11 +58,16 @@ function checkAngleDifference(angle1, angle2) {
     
     differience = Math.min(highAngle - lowAngle, Math.PI + lowAngle - highAngle)
     return (((Math.PI - differience) / Math.PI) - .5) * 2
-}
+    }
 
 
 // mainloop
 function MainLoop() {
+
+    if (canvas.classList.contains("paused")) {
+        setTimeout(MainLoop, 10)
+        return
+    }
 
     for (let I = 0; I < barArray2D.length; I++) {
         for (let J = 0; J < barArray2D[I].length; J++) {
@@ -123,12 +128,11 @@ function MainLoop() {
         data[i + 2] = Math.max(Math.floor(data[i + 2] * .99), 0); // blue
     }
     ctx.putImageData(imageData, 0, 0);
-
     setTimeout(MainLoop, 10)
+
 }
-
-
 MainLoop()
-
-    }
+}
 )
+
+canvasDayList.push(day)
