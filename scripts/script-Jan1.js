@@ -1,4 +1,7 @@
-const canvas = document.getElementById("canvas");
+var day = new dayCanvas(
+    () => {
+        
+const canvas = document.getElementById("canvas-Jan1");
 const ctx = canvas.getContext("2d");
 
 ctx.canvas.width  = window.innerWidth;
@@ -6,7 +9,7 @@ ctx.canvas.height = window.innerHeight;
 
 
 var allowColorVariation = false
-document.body.addEventListener("click", () => {allowColorVariation = !allowColorVariation})
+canvas.addEventListener("click", () => {allowColorVariation = !allowColorVariation})
 
 var baseLightning = {
     X: window.innerWidth / 2,
@@ -17,13 +20,8 @@ var baseLightning = {
 
 var lightningArray = [baseLightning]
 
-const gradient = ctx.createLinearGradient(window.innerWidth, 0, window.innerWidth, window.innerHeight);
-
-gradient.addColorStop(0, "black");
-gradient.addColorStop(1, "lightyellow");
-
 // Set the fill style and draw a rectangle
-ctx.fillStyle = gradient;
+ctx.fillStyle = "black";
 ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
 
 // mainloop
@@ -73,3 +71,6 @@ function MainLoop() {
 
 
 MainLoop()
+
+    }
+)
