@@ -1,12 +1,11 @@
 window.addEventListener("dblclick", function (e) {
     nextCanvas = e.target.nextElementSibling
 
-
-    console.log(nextCanvas.nodeName)
-    if (nextCanvas.nodeName == "CANVAS") {
-        nextCanvas.scrollIntoView(true)
+    if (nextCanvas == null || nextCanvas.nodeName != "CANVAS") {
+        this.window.scrollTo(0, 0)    
     }
     else {
-        this.window.scrollTo(0, 0)
+        nextCanvas.scrollIntoView(true)
     }
+
 }, false);
