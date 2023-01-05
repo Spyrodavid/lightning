@@ -21,7 +21,8 @@ var lightningArray = [baseLightning]
 
 // Set the fill style and draw a rectangle
 ctx.fillStyle = "black";
-ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
+ctx.fillRect(0, 0, window.innerWidth, window.innerHeight)
+
 
 function MainLoop() {
 
@@ -33,8 +34,11 @@ function MainLoop() {
     lightningArray.forEach(lightning => {
         ctx.beginPath();
         ctx.moveTo(lightning.X, lightning.Y);
+        
         lightning.Y -= Math.floor(Math.random() * 11) - 5
         lightning.X += Math.floor(Math.random() * 11) - 5
+        //Math.floor(((Math.random() * 3) - 1)) * 11
+
         ctx.lineTo(lightning.X, lightning.Y)
         ctx.strokeStyle = `hsl(${lightning.Hue}, 100%, ${lightning.Lightness}%)`
         ctx.stroke()
@@ -52,6 +56,18 @@ function MainLoop() {
             }
             lightningArray.push(newLightning)
         }
+    })
+
+    lightningArray = lightningArray.filter(lightning => {
+
+        let outsideBorder = 30
+        let outX = lightning.X < 0 - outsideBorder || lightning.X > window.innerWidth + outsideBorder
+        let outY = lightning.Y < 0 - outsideBorder || lightning.Y > window.innerHeight + outsideBorder
+        if (outX || outY) {
+            return false
+            
+        }
+        return true
     })
 
     maxLiving = 4000
