@@ -1,5 +1,7 @@
 canvases = document.getElementsByTagName("canvas")
 
+
+
 window.addEventListener("dblclick", function (e) {
     nextCanvas = e.target.nextElementSibling
 
@@ -11,6 +13,29 @@ window.addEventListener("dblclick", function (e) {
     }
 
 }, false);
+
+correctCode = ["ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown", "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight", "a", "b", "enter"]
+var konamiCode = []
+window.addEventListener("keydown", function (event) {
+    if (event.defaultPrevented) {
+      return; // Do nothing if the event was already processed
+    }
+    
+    konamiCode.push(event.key)
+    for (let index = 0; index < konamiCode.length; index++) {
+        if (konamiCode[index] != correctCode[index]) {
+        konamiCode = []
+        }
+        if (konamiCode.length == correctCode.length) {
+            document.getElementById("canvas-Jan3").scrollIntoView(true)
+            konamiCode = []
+        }
+        console.log(konamiCode)
+        
+    }
+  
+    
+  }, true);
 
 function checkPaused() {
     canvasDayList.forEach(day => {
