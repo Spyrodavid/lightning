@@ -4,6 +4,7 @@ var day = new dayCanvas(document.getElementById("canvas-Jan4"),
 const canvas = document.getElementById("canvas-Jan4");
 const ctx = canvas.getContext("2d");
 
+
 ctx.canvas.width  = window.innerWidth;
 ctx.canvas.height = window.innerHeight;
 
@@ -18,18 +19,20 @@ var baseWiggle = {
     Hue: 192,
     Lightness: 45,
     angle: Math.PI /3,
-    noiseSeed: null
+    noiseSeed: 0
 }
 
 var wiggleArray = []
 
-for (let index = 0; index < 1000; index++) {
+for (let index = 0; index < 800; index++) {
     newWiggle = {...baseWiggle}
     newWiggle.X = Math.random() * window.innerWidth
     newWiggle.noiseSeed = Math.random()
-    newWiggle.Hue = Math.random() * 360
+    newWiggle.Hue = newWiggle.X / window.innerWidth * 360
     wiggleArray.push(newWiggle)
 }
+
+noise.seed(Math.random())
 
 
 const wiggleWidth = 100
@@ -45,10 +48,10 @@ function MainLoop() {
     wiggleArray.forEach(wiggle => {
 
         ctx.beginPath();
-        movedCenterDist = (wiggleWidth / 2) + Math.sin(t) * wiggleMagnitude
+        movedCenterDist = 10; (wiggleWidth / 2) + Math.sin(t) * wiggleMagnitude
 
-        ctx.moveTo(wiggle.X - Math.cos(wiggle.angle) * -movedCenterDist, wiggle.Y - Math.cos(wiggle.angle) * movedCenterDist);
-        ctx.lineTo(wiggle.X + Math.cos(wiggle.angle) * movedCenterDist, wiggle.Y + Math.cos(wiggle.angle) * movedCenterDist);
+        ctx.moveTo(wiggle.X - Math.cos(wiggle.angle) * movedCenterDist, wiggle.Y + Math.sin(wiggle.angle) * movedCenterDist);
+        ctx.lineTo(wiggle.X + Math.cos(wiggle.angle) * movedCenterDist, wiggle.Y - Math.sin(wiggle.angle) * movedCenterDist);
         
         
         wiggle.Y += Math.sin(wiggle.angle) * 3
@@ -69,8 +72,7 @@ function MainLoop() {
             wiggle.angle = - (wiggle.angle % (Math.PI * 2))
         }
         
-        noise.seed(wiggle.noiseSeed)
-        wiggle.angle += noise.perlin2(t, 0) / 5
+        wiggle.angle += noise.simplex2(wiggle.X / window.innerWidth, wiggle.Y / window.innerHeight) / 5
 
     })
 
@@ -80,12 +82,12 @@ function MainLoop() {
     const data = imageData.data;
 
     
-    for (let i = 0; i < data.length; i += 4) {
-        
-        data[i] = Math.max(Math.floor(data[i] * .99), 0); // red
-        data[i + 1] = Math.max(Math.floor(data[i + 1] * .99), 0); // green
-        data[i + 2] = Math.max(Math.floor(data[i + 2] * .99), 0); // blue
-    }
+    // for (let i = 0; i < data.length; i += 4) {
+    //     data[i] = Math.max(Math.floor(data[i] * .99), 0); // red
+    //     data[i + 1] = Math.max(Math.floor(data[i + 1] * .99), 0); // green
+    //     data[i + 2] = Math.max(Math.floor(data[i + 2] * .99), 0); // blue
+    // }
+
     ctx.putImageData(imageData, 0, 0);
  
     setTimeout(MainLoop, 10)
