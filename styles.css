@@ -6,12 +6,14 @@ body {
 
 #check_this_out {
   position: relative;
-  width: 100px;
+  width: auto;
   height: 100vmin;
   bottom: 0;
-  max-width: 50vmax;
+  max-width: 30vmax;
   max-height: 50vmax;
 }
+
+
 
 #codeText {
   position: relative;
