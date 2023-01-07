@@ -5,8 +5,8 @@ const canvas = document.getElementById("canvas-Jan4");
 const ctx = canvas.getContext("2d");
 
 
-ctx.canvas.width  = window.innerWidth;
-ctx.canvas.height = window.innerHeight;
+canvas.width  = window.innerWidth;
+canvas.height = window.innerHeight;
 
 // Set the fill style and color background
 ctx.fillStyle = "black";
