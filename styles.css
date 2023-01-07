@@ -6,7 +6,7 @@ body {
 
 #check_this_out {
   position: relative;
-  width: auto;
+  width: 100px;
   height: 100vmin;
   bottom: 0;
   max-width: 50vmax;
@@ -17,6 +17,7 @@ body {
   position: relative;
   z-index: 0;
   height: 100vmin;
+  width: auto;
   max-width: 50vmax;
   max-height: 50vmax;
 }
