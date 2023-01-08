@@ -13,8 +13,6 @@ body {
   max-height: 50vmax;
 }
 
-
-
 #codeText {
   position: relative;
   z-index: 0;
@@ -22,4 +20,9 @@ body {
   width: auto;
   max-width: 50vmax;
   max-height: 50vmax;
+}
+
+#div-Jan5 {
+  width: auto;
+  height: auto;
 }

@@ -1,11 +1,6 @@
 var day = new dayCanvas(document.getElementById("canvas-Jan5"),
     () => {
 
-const div = document.getElementById("div-Jan5");
-
-div.width = window.innerWidth
-div.height = window.innerHeight
-
 const canvas = document.getElementById("canvas-Jan5");
 const gl = canvas.getContext("webgl");
 

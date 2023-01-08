@@ -15,7 +15,7 @@ window.addEventListener("dblclick", function (e) {
 
     console.log(nextCanvas)
     
-    if (nextCanvas == null || nextCanvas.classList.contains("secret")) {
+    if (nextCanvas == null || nextCanvas.classList.contains("secret") || nextCanvas.nodeName == "SCRIPT") {
         this.window.scrollTo(0, 0)    
     }
     else {
