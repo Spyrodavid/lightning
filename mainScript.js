@@ -24,7 +24,7 @@ window.addEventListener("dblclick", function (e) {
 
 }, false);
 
-correctCode = ["ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown", "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight", "a", "b", "enter"]
+correctCode = ["ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown", "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight", "b", "a", "enter"]
 var konamiCode = []
 window.addEventListener("keydown", function (event) {
     if (event.defaultPrevented) {
