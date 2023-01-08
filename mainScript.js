@@ -3,9 +3,19 @@ canvases = document.getElementsByTagName("canvas")
 
 
 window.addEventListener("dblclick", function (e) {
-    nextCanvas = e.target.nextElementSibling
 
-    if (nextCanvas == null || nextCanvas.nodeName != "CANVAS") {
+    var Canvas = e.target
+
+    while(Canvas.parentElement.nodeName != "BODY") {
+        console.log(Canvas)
+        Canvas = Canvas.parentElement
+    }
+    
+    nextCanvas = Canvas.nextElementSibling
+
+    console.log(nextCanvas)
+    
+    if (nextCanvas == null || nextCanvas.classList.contains("secret")) {
         this.window.scrollTo(0, 0)    
     }
     else {
