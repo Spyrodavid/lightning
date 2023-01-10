@@ -47,7 +47,7 @@ function MainLoop() {
             let newLightning = {...lightning}
             if (allowColorVariation) {
                 if (Math.floor(Math.random() * 10) == 0) { 
-                    newLightning.Lightness -= 2
+                    newLightning.Lightness -= 5
                 }
                 else {
                 newLightning.Lightness = 45

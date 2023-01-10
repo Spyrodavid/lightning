@@ -7,13 +7,10 @@ window.addEventListener("dblclick", function (e) {
     var Canvas = e.target
 
     while(Canvas.parentElement.nodeName != "BODY") {
-        console.log(Canvas)
         Canvas = Canvas.parentElement
     }
     
     nextCanvas = Canvas.nextElementSibling
-
-    console.log(nextCanvas)
     
     if (nextCanvas == null || nextCanvas.classList.contains("secret") || nextCanvas.nodeName == "SCRIPT") {
         this.window.scrollTo(0, 0)    
@@ -40,16 +37,18 @@ window.addEventListener("keydown", function (event) {
             document.getElementById("canvas-Jan3").scrollIntoView(true)
             konamiCode = []
         }
-        console.log(konamiCode)
         
     }
   
     
   }, true);
 
+var currentDay
+
 function checkPaused() {
     canvasDayList.forEach(day => {
         if (checkVisible(day.canvas)) {
+            currentDay = day
             day.canvas.classList.remove("paused")    
         }
         else {
@@ -64,4 +63,20 @@ function checkVisible(elm) {
     var rect = elm.getBoundingClientRect();
     var viewHeight = Math.max(document.documentElement.clientHeight, window.innerHeight);
     return !(rect.bottom < 0 || rect.top - viewHeight >= 0);
-  }
+}
+
+// make fps counter
+
+
+function updateFps() {
+    canvasDayList.forEach(day => {
+        if (checkVisible(day.canvas)) {
+            day.canvas.classList.remove("paused")    
+        }
+        else {
+            day.canvas.classList.add("paused")
+        }
+    })
+    setTimeout(updateFps, 10)
+}
+updateFps()
