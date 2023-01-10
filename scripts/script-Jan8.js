@@ -35,7 +35,7 @@ totalLength = 0
 
 var barArray = []
 
-for (let index = 0; index < 50; index++) {
+for (let index = 0; index < [10, 50][Math.floor(Math.random() * 2)]; index++) {
     newbar = {...baseBar}
     newbar.prevBar = barArray[barArray.length - 1]
     newLength = Math.random() * (window.innerHeight / 2) * ((window.innerHeight /2) - totalLength)
