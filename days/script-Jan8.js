@@ -1,12 +1,12 @@
 var day = new dayCanvas(document.getElementById("canvas-Jan8"),
     () => {
 
+// reccomended listening: loosten the clamp
 
 const canvas = document.getElementById("canvas-Jan8");
 const ctx = canvas.getContext("2d");
 
-var allowGraph = false
-canvas.addEventListener("click", () => {allowGraph = !allowGraph})
+
 
 
 canvas.width  = window.innerWidth;
@@ -24,27 +24,29 @@ var baseBar = {
     Lightness: 45,
     angle: Math.PI / 2,
     length: window.innerHeight / 2,
-    speed: Math.PI * .01 * .3 ,
+    speed: Math.PI * .01 * .3 * Math.random() * 2,
     prevBar: null
 
 }
 
 totalLength = 0
 
+var allowGraph = false
+canvas.addEventListener("click", () => {allowGraph = !allowGraph; endPoints = []})
+
 var barArray = []
 
-for (let index = 0; index < 1; index++) {
+for (let index = 0; index < 50; index++) {
     newbar = {...baseBar}
     newbar.prevBar = barArray[barArray.length - 1]
     newLength = Math.random() * (window.innerHeight / 2) * ((window.innerHeight /2) - totalLength)
     totalLength += newLength
     newbar.length = newLength
     barArray.push(newbar)
+    
 }
 
-console.log(totalLength)
-
-graphValues = []
+endPoints = []
 
 t = 0
 function MainLoop() {
@@ -56,9 +58,8 @@ function MainLoop() {
 
     // ctx.fillStyle = "black";
     // ctx.fillRect(0, 0, window.innerWidth, window.innerHeight)
-    
-    graphValues = [0].concat(graphValues)
 
+    let newarr
     barArray.forEach(bar => {
 
         ctx.beginPath();
@@ -90,12 +91,13 @@ function MainLoop() {
         }
 
         bar.angle %= (Math.PI * 2)
-        
-        graphValues[0] += Math.sin(bar.angle) * bar.length
-        console.log(graphValues[0])
-        //bar.angle += noise.simplex2(bar.X / window.innerWidth, bar.Y / window.innerHeight) / 5
 
+        
+        //bar.angle += noise.simplex2(bar.X / window.innerWidth, bar.Y / window.innerHeight) / 5
+        newarr = [bar.X + Math.cos(bar.angle) * bar.length, bar.Y - Math.sin(bar.angle) * bar.length]
     })
+
+    endPoints = newarr.concat(endPoints)
 
     t += .1
     
@@ -111,28 +113,19 @@ function MainLoop() {
 
     ctx.putImageData(imageData, 0, 0);
 
-    topGraph = window.innerHeight * .9
-    ctx.beginPath();
-    for (let index = 0; index < Math.min(window.innerWidth, graphValues.length); index++) {
-        let totHeight = graphValues[index] - window.innerHeight;
-
+    
+    if (allowGraph) {
+        ctx.beginPath();
+        ctx.moveTo(endPoints[0], endPoints[1]);
         
-        
-
-        if (index == 0) {
-            ctx.moveTo(window.innerWidth - index , totHeight);
+        for (let index = 0; index < endPoints.length; index += 2) {
+            ctx.lineTo(endPoints[index], endPoints[index + 1]);
         }
-       
         
-
-        
-        ctx.lineTo(window.innerWidth - index, totHeight);
-        
-
-        
+        ctx.strokeStyle = "White"
+        ctx.stroke()
     }
-    ctx.strokeStyle = "white"
-    ctx.stroke()
+
  
     setTimeout(MainLoop, 10)
 
@@ -142,3 +135,5 @@ MainLoop()
 )
 
 canvasDayList.push(day)
+
+function map(value, x1, y1, x2, y2) {return (value - x1) * (y2 - x2) / (y1 - x1) + x2}

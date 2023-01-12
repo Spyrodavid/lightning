@@ -35,8 +35,8 @@ for (let index = 0; index < 800 * (window.innerWidth / 1280); index++) {
     
 }
 
-noise.seed(Math.random())
-
+noiseSeed = Math.random()
+noise.seed(noiseSeed)
 
 const wiggleWidth = 100
 const wiggleMagnitude = 10
@@ -47,6 +47,7 @@ function MainLoop() {
         setTimeout(MainLoop, 10)
         return
     }
+    noise.seed(noiseSeed)
 
     wiggleArray.forEach(wiggle => {
 

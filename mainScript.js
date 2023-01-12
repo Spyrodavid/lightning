@@ -68,15 +68,15 @@ function checkVisible(elm) {
 // make fps counter
 
 
-function updateFps() {
-    canvasDayList.forEach(day => {
-        if (checkVisible(day.canvas)) {
-            day.canvas.classList.remove("paused")    
-        }
-        else {
-            day.canvas.classList.add("paused")
-        }
-    })
-    setTimeout(updateFps, 10)
-}
-updateFps()
+// function updateFps() {
+//     canvasDayList.forEach(day => {
+//         if (checkVisible(day.canvas)) {
+//             day.canvas.classList.remove("paused")    
+//         }
+//         else {
+//             day.canvas.classList.add("paused")
+//         }
+//     })
+//     setTimeout(updateFps, 10)
+// }
+// updateFps()
