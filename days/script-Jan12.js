@@ -12,16 +12,15 @@ canvas.height = height;
 
 
 var baseBall = {
-    X: width / 2,
-    Y: 0,
+    pos: new Vector(width / 2, 0),
+    vel: new Vector(0, 5),
     Hue: 192,
     Lightness: 45,
-    dx: 0,
-    dy: 0,
-    radius:5,
+    radius:20
+
 }
 
-var ballArray = []
+var ballArray = [baseBall]
 
 
 // Set the fill style and color background
@@ -36,7 +35,28 @@ var t1 = Date.now()
 var t2 = Date.now()
 
 const noiseSave = ctx.getImageData(0, 0, width, height)
+
 const noiseSaveData = noiseSave.data
+        
+i = 0
+for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; x++) {
+
+        curNoiseVal = noise.simplex3(x / 300, y / 300, Date.now() / 10000)
+
+        curVal = ((Math.sqrt(Math.sqrt(curNoiseVal)) + 1)* 1/2) * 255
+        
+        noiseSaveData[i] = curVal; // red
+        noiseSaveData[i + 1] = curVal; // green
+        noiseSaveData[i + 2] = curVal; // blue
+
+        i+= 4
+    }
+    
+}
+
+            
+
 
 function MainLoop() {
 
@@ -54,6 +74,8 @@ function MainLoop() {
 
     let timeElapsed = t2 - programStart
 
+    //console.log(frameTime)
+
     i = 0
     
     for (let y = 0; y < height; y++) {
@@ -61,7 +83,7 @@ function MainLoop() {
 
             curVal = 0;
 
-            if (y > height / 2) {
+            if (y + x > height  * 2) {
                 curVal = 255
             }
             
@@ -70,44 +92,55 @@ function MainLoop() {
             data[i + 2] = curVal; // blue
 
             i+= 4
-            //console.log(y)
+
             
         }
         
     }
 
+    ctx.putImageData(imageData, 0, 0);
+
     ballArray.forEach(ball => {
+        ball.pos = Vector.add(ball.pos, ball.vel)
+        
 
         ctx.beginPath();
-        ctx.moveTo(ball.X - Math.cos(ball.angle) * movedCenterDist, ball.Y + Math.sin(ball.angle) * movedCenterDist);
-        ctx.lineTo(ball.X + Math.cos(ball.angle) * movedCenterDist, ball.Y - Math.sin(ball.angle) * movedCenterDist);
-        
-        
-        ball.Y += Math.sin(ball.angle) * 3
-        ball.X += Math.cos(ball.angle) * 3
+        ctx.arc(ball.pos.x, ball.pos.y, ball.radius, 0, 2 * Math.PI);
         ctx.strokeStyle = `hsl(${ball.Hue}, 100%, ${ball.Lightness}%)`
-        ctx.stroke()
+        ctx.stroke();
 
-        let outX = ball.X < 0 || ball.X > window.innerWidth
-        let outY = ball.Y < 0 || ball.Y > window.innerHeight
+        collisionPoints = []
 
-        ball.angle %= (Math.PI * 2)
-        if (outX)  {
-     
-            ball.angle = Math.PI - ball.angle
+        for (let pos of pointsInCircle(ball.pos.x, ball.pos.y, ball.radius)){
             
+            var pos1d = Dimension2to1(pos.x, pos.y, width)
+            if (data[pos1d * 4] > 0) {
+                ball.Hue = "10"
+                
+                ball.vel = new Vector(0, 0)
+                                
+                collisionPoints.push(pos)
+                
+            }
         }
-        if (outY)  {
-            ball.angle = - (ball.angle % (Math.PI * 2))
+
+        if (collisionPoints.length > 0) {
+        
+            var totVector = new Vector()
+
+            for (let vec of collisionPoints) {
+                
+                dirtoCenter = Vector.sub(ball.pos, vec)
+                totVector = Vector.add(totVector, dirtoCenter)
+            }
+            
+            pushVector = Vector.normalize(totVector)
+            
+            ball.vel = pushVector
+
         }
         
-        ball.angle += noise.simplex2(ball.X / window.innerWidth, ball.Y / window.innerHeight) / 5
-
     })
-    
-    
-
-    ctx.putImageData(imageData, 0, 0);
     
 
     setTimeout(MainLoop, 10)
@@ -118,3 +151,25 @@ MainLoop()
 )
 
 canvasDayList.push(day)
+
+function* pointsInCircle(x, y, r) {
+
+    for (let xpos = x - r; xpos <= x + r; xpos++) {
+        for (let ypos = y - r; ypos <= y + r; ypos++) {
+            
+            if (((x - xpos) ** 2) + ((y - ypos) ** 2) < r ** 2) {
+                
+                yield new Vector(xpos, ypos)
+            }
+        }
+    }
+
+}
+
+function Dimension2to1(x, y, width) {
+    return x + y * width
+}
+
+function Dimension1to2(i, width) {
+    return [x % width, Math.floor(i / width)]
+}

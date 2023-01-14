@@ -47,7 +47,6 @@ function MainLoop() {
     t2 = Date.now()
 
     let timeElapsed = t2 - programStart
-    console.log(frameTime)
     
 
     
@@ -76,7 +75,6 @@ function MainLoop() {
 
             if (curNoiseVal > .85 && x % Math.floor(width / 10) == 0 && y % Math.floor(height / 10) == 0) {
                 drawArray.push([x,y])
-                console.log(123)
                 
                 
             }
