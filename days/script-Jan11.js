@@ -10,6 +10,8 @@ height = window.innerHeight
 canvas.width  = width;
 canvas.height = height;
 
+var dynamicAllow = true
+canvas.addEventListener("click", () => {dynamicAllow = !dynamicAllow})
 
 
 // Set the fill style and color background
@@ -58,7 +60,7 @@ function MainLoop() {
     let x = 0
     let y = 0
 
-    interval = 10 + Math.floor(Math.random() * 50 )
+    staticInterval = 10 + Math.floor(Math.random() * 50 )
     
     for (let i = 0; i < data.length; i += 4) {
         let pixel = Math.floor(i / 4)
@@ -67,8 +69,11 @@ function MainLoop() {
             y += 1
         }
 
+        dynamicInterval = Math.floor(Math.random() * 100 )
+
+        interval = dynamicAllow ? dynamicInterval : staticInterval
         
-        if (i% Math.floor(Math.random() * 100 )== 0) {
+        if (i % interval == 0) {
             curNoiseVal = noise.simplex3(x / 100, y / 100, Date.now() / 10000)
 
             curVal = ((Math.sqrt(curNoiseVal) + 1)* 1/2) * 255 

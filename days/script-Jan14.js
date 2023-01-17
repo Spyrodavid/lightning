@@ -1,7 +1,7 @@
-var day = new dayCanvas(document.getElementById("canvas-Jan12"),
+var day = new dayCanvas(document.getElementById("canvas-Jan14"),
     () => {
 
-const canvas = document.getElementById("canvas-Jan12");
+const canvas = document.getElementById("canvas-Jan14");
 const ctx = canvas.getContext("2d");
 
 width = window.innerWidth
@@ -103,13 +103,13 @@ function MainLoop() {
         
 
         ctx.beginPath();
-        ctx.arc(ball.pos.x, ball.pos.y, ball.radius, 0, 2 * Math.PI);
+        //ctx.arc(ball.pos.x, ball.pos.y, ball.radius, 0, 2 * Math.PI);
 
-        if (Vector.len(ball.vel) != 0) {
-            ctx.moveTo(ball.pos.x, ball.pos.y)
-            angleVector = Vector.mul(Vector.normalize(ball.vel), ball.radius)
-            ctx.lineTo(ball.pos.x + angleVector.x, ball.pos.y + angleVector.y)
-        }
+        // if (Vector.len(ball.vel) != 0) {
+        //     ctx.moveTo(ball.pos.x, ball.pos.y)
+        //     angleVector = Vector.mul(Vector.normalize(ball.vel), ball.radius)
+        //     ctx.lineTo(ball.pos.x + angleVector.x, ball.pos.y + angleVector.y)
+        // }
         
         ctx.strokeStyle = `hsl(${ball.Hue}, 100%, ${ball.Lightness}%)`
         ctx.stroke();
@@ -123,9 +123,8 @@ function MainLoop() {
             var curNoise = noiseGen(pos.x, pos.y, timeElapsed)
 
             displaySaveData[pos1d * 4] = curNoise
-            if (curNoise > 0) {
+            if (true) {
 
-                
                 ball.vel = new Vector(0, 0)
                                 
                 collisionPoints.push(pos)
