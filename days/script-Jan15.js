@@ -97,7 +97,8 @@ function MainLoop() {
     
             i+= 4
         }
-        
+        if (i > width *  height * 4)
+        break;
     }
     
 
