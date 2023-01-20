@@ -52,8 +52,11 @@ for (let y = 0; y < noiseHeight; y++) {
 function noiseFromPoint(x, y) {
     return noise.simplex2(x / 200, y / 200)
 }
+console.log(width, height)
 
 pointsArray = []
+
+onPageTimeElapsed = 0
 
 function MainLoop() {
 
@@ -64,12 +67,11 @@ function MainLoop() {
 
 
     t1 = Date.now()
-    var frameTime = t1 - t2
-    t2 = Date.now()
+    
+    
 
     let timeElapsed = t2 - programStart
-
-    //console.log(frameTime)
+    
 
     noise.seed(noiseSeed)
 
@@ -81,7 +83,7 @@ function MainLoop() {
     start2X = width > height ? noiseWidth : 0
     start2Y = width > height ? 0 : noiseHeight
 
-    t = timeElapsed / 5000 * Math.PI
+    t = onPageTimeElapsed / 500 * Math.PI
     t = t % (Math.PI * 2)
 
     ctx.beginPath();
@@ -124,6 +126,12 @@ function MainLoop() {
     // ctx.strokeStyle = "grey"
     // ctx.stroke();
 
+    t2 = Date.now()
+
+    var frameTime = t2 - t1
+    onPageTimeElapsed += frameTime
+
+    //console.log(frameTime)
 
     setTimeout(MainLoop, 10)
 
