@@ -29,7 +29,7 @@ noiseWidth = Math.min(width, min)
 
 
 
-const noiseSave = ctx.getImageData(0, 0, noiseWidth, noiseHeight)
+const noiseSave   = ctx.getImageData(0, 0, noiseWidth, noiseHeight)
 const displaySave = ctx.getImageData(0, 0, noiseWidth, noiseHeight)
 
 const noiseSaveData = noiseSave.data
@@ -50,13 +50,15 @@ for (let y = 0; y < noiseHeight; y++) {
 }
 
 function noiseFromPoint(x, y) {
-    return noise.simplex2(x / 200, y / 200)
+    minAspect = Math.min(noiseHeight, noiseWidth)
+    return noise.simplex2((577 / minAspect ) * x / 200, (577 / minAspect) * y / 200)
 }
-console.log(width, height)
+
 
 pointsArray = []
 
 onPageTimeElapsed = 0
+t = 0
 
 function MainLoop() {
 
@@ -83,9 +85,9 @@ function MainLoop() {
     start2X = width > height ? noiseWidth : 0
     start2Y = width > height ? 0 : noiseHeight
 
-    t = onPageTimeElapsed / 500 * Math.PI
+    t += 2 / 500 * Math.PI
     t = t % (Math.PI * 2)
-
+    
     ctx.beginPath();
     var radius = min / 4
     circleX = (noiseWidth / 2)  + (Math.cos(t) * radius)

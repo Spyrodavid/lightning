@@ -37,6 +37,9 @@ for (let index = 0; index < 30; index++) {
 
 savedDrawArray = []
 
+nx = 0
+ny = 0
+
 function MainLoop() {
 
     if (canvas.classList.contains("paused")) {
@@ -50,7 +53,8 @@ function MainLoop() {
 
     let timeElapsed = t2 - programStart
     
-
+    // nx += noise.simplex2(0, timeElapsed / 100000) * 2
+    // ny += noise.simplex2(1000, timeElapsed / 100000) * 2
     
     noise.seed(noiseSeed)
     
@@ -74,7 +78,7 @@ function MainLoop() {
         interval = dynamicAllow ? dynamicInterval : staticInterval
         
         if (i % interval == 0) {
-            curNoiseVal = noise.simplex3(x / 100, y / 100, Date.now() / 10000)
+            curNoiseVal = noise.simplex3((x + nx) / 100, (y + ny) / 100, Date.now() / 10000)
 
             curVal = ((Math.sqrt(curNoiseVal) + 1)* 1/2) * 255 
 

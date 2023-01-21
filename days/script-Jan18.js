@@ -1,7 +1,9 @@
-var day = new dayCanvas(document.getElementById("canvas-Jan17"),
+var day = new dayCanvas(document.getElementById("canvas-Jan18"),
     () => {
 
-const canvas = document.getElementById("canvas-Jan17");
+// reccomended listening: rigged game - machine girl
+
+const canvas = document.getElementById("canvas-Jan18");
 const ctx = canvas.getContext("2d");
 
 width = window.innerWidth
@@ -9,16 +11,6 @@ height = window.innerHeight
 
 canvas.width  = width;
 canvas.height = height;
-
-
-Wmult = (width / 1280)
-Hmult = (height / 577)
-
-difDraws = [[width, height], [Wmult * 1000, Hmult * 500]]
-
-var difI = 0
-canvas.addEventListener("click", () => {difI = (difI + 1) % 2})
-
 
 // Set the fill style and color background
 ctx.fillStyle = "black";
@@ -88,16 +80,10 @@ function MainLoop() {
 
     noise.seed(noiseSeed)
 
-    dataSave.vel = Vector.add(dataSave.vel, new Vector(noise.simplex2(timeElapsed / 1000, 0), noise.simplex2(timeElapsed / 1000, 2000)))
-
-    if (Vector.len(dataSave.vel) > 10) {
-        dataSave.vel = Vector.mul(Vector.normalize(dataSave.vel), 9)
-    }
-
     dataSave.pos = Vector.add(dataSave.pos,  dataSave.vel)
 
 
-    ctx.drawImage(canvas, dataSave.vel.x, dataSave.vel.y, difDraws[difI][0], difDraws[difI][1])
+    ctx.drawImage(canvas, dataSave.vel.x, dataSave.vel.y)
 
     
     if (outsideBound1D(dataSave.pos.x, width)) {

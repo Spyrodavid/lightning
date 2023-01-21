@@ -75,9 +75,9 @@ function MainLoop() {
 
             ny = y * Math.sin(x / width * Math.PI)
             
-            displaySaveData[i] = noiseGen(x,ny, 0 + t)
-            displaySaveData[i + 1] = noiseGen(x,ny, 2000 + t)
-            displaySaveData[i + 2] = noiseGen(x,ny, 4000 + t)
+            displaySaveData[i] = noiseGen(x, ny, 0 + t)
+            displaySaveData[i + 1] = noiseGen(x, ny, 2000 + t)
+            displaySaveData[i + 2] = noiseGen(x, ny, 4000 + t)
             
 
             //if (noiseSaveData[i] > 0) {
