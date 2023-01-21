@@ -34,7 +34,7 @@ const displaySave = ctx.getImageData(0, 0, width, height)
 var displaySaveData = displaySave.data
 
 widthDivisions = 5
-perDivision = width / widthDivisions
+perDivision = Math.floor(width / widthDivisions)
 for (let index = 0; index < widthDivisions; index++) {
     for (let y = 0; y < height; y++) {
         for (let x = index * perDivision; x < (index + 1) * perDivision; x++) {
@@ -82,7 +82,7 @@ function MainLoop() {
         ctx.fillText(text.random(), Math.random() * width, Math.random() * height);
     }
 
-    if (timeElapsed / 1000 > 20 && Math.random() < .001) {
+    if (timeElapsed / 1000 > 20 && Math.random() < .003) {
         ctx.fillStyle = "red";
         ctx.font = "30px Arial";
         ctx.fillText("Hello World", Math.random() * width, Math.random() * height);
