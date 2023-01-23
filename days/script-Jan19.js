@@ -55,6 +55,9 @@ text = ["Hello World", "If I asked for help", "System Error", "Is this working?"
 
 ctx.putImageData(displaySave, 0, 0)
 
+onPageTimeElapsed = 0
+
+
 function MainLoop() {
 
     if (canvas.classList.contains("paused")) {
@@ -64,14 +67,12 @@ function MainLoop() {
 
 
     t1 = Date.now()
-    var frameTime = t1 - t2
-    t2 = Date.now()
 
     let timeElapsed = t2 - programStart
 
-    ctx.drawImage(canvas, (Math.random() - .5) * timeElapsed / 500, (Math.random() - .5) *  timeElapsed / 500)
 
-    setTimeout(MainLoop, 10)
+    ctx.drawImage(canvas, (Math.random() - .5) * onPageTimeElapsed / 500, (Math.random() - .5) *  onPageTimeElapsed / 500)
+
 
     ctx.fillStyle = "black";
     ctx.font = "30px Arial";
@@ -82,11 +83,20 @@ function MainLoop() {
         ctx.fillText(text.random(), Math.random() * width, Math.random() * height);
     }
 
-    if (timeElapsed / 1000 > 20 && Math.random() < .003) {
+    if (onPageTimeElapsed / 1000 > 20 && Math.random() < .003) {
         ctx.fillStyle = "red";
         ctx.font = "30px Arial";
         ctx.fillText("Hello World", Math.random() * width, Math.random() * height);
     }
+
+    t2 = Date.now()
+
+    var frameTime = t2 - t1
+    onPageTimeElapsed += frameTime + 10
+
+    console.log(onPageTimeElapsed / 1000)
+
+    setTimeout(MainLoop, 10)
 
 }
 MainLoop()
