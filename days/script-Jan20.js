@@ -52,7 +52,6 @@ red.src = `images/ascend/Outred.png`
 const white = new Image()
 white.src = `images/ascend/White.png`
 
-console.log(white.width)
 
 imgOffset = 365
 
@@ -87,14 +86,12 @@ function MainLoop() {
             if (spawner.pos.y + pos.y + 390 < 0) {
                 pos = Vector.add(pos, [0, imgOffset * 3])
             }
-            console.log(pos)
             return Vector.add(pos, [0, -1])
             
         })
     })
 
     
-
     spawnerArray.forEach(spawner => {
         spawner.imgPosArray.forEach(pos => {
             pos = Vector.add(pos, [Math.sin(onPageTimeElapsed / 1000) * 10, 0])
@@ -105,9 +102,36 @@ function MainLoop() {
 
     //
 
-    // const whiteSave = ctx.getImageData(0, 0, width, height)
+    const whiteSave = ctx.getImageData(0, 0, width, height)
 
-    // ctx.putImageData(whiteSave, 0, 0)
+    for (let x = 0; x < width; x++) {
+        for (let y = 0; y < height; y++) {
+            i = Dimension2to1(x, y, width) * 4
+
+            // y * Math.floor(Math.random()* 1.2)
+            // whiteSave.data[i] = (x * y) % 2 == 0 ? 255 : 0
+
+            if (y + Math.sin(onPageTimeElapsed / 500 + (x / 10)) * 5 > 100 + Math.sin(onPageTimeElapsed / 500) * 10) {
+                if (whiteSave.data[i] != 0) {
+                    whiteSave.data[i] = 200
+                    whiteSave.data[i + 1] = 10
+                    whiteSave.data[i + 2] = 30
+                }
+                else {
+                    ny = Math.floor(Math.random() * (y + 200) / 500)
+                    whiteSave.data[i] = noise.simplex3(x / 1000,y / 1000, onPageTimeElapsed / 10000) * 255
+                }
+            }
+
+            else if (whiteSave.data[i] != 0) {
+                whiteSave.data[i] = 5
+                whiteSave.data[i + 1] = 5
+                whiteSave.data[i + 2] = 15
+            }
+            
+        }
+    }
+    ctx.putImageData(whiteSave, 0, 0)
 
     //
 
