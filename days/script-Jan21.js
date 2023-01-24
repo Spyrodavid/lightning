@@ -17,10 +17,27 @@ var baseBar = {
     Y: height,
     angle: -Math.PI / 2,
     percent: 0,
-    length: height / 2
+    growFactor: .01,
+    length: height / 4,
+    lightness: 100
 }
 
-var barArray = [baseBar]
+function makeNewBar(prevBar, angleChange, lengthMult, lightness) {
+    let newBar = {...baseBar}
+
+    newBar.X = prevBar.X + Math.cos(prevBar.angle) * prevBar.length
+    newBar.Y = prevBar.Y + Math.sin(prevBar.angle) * prevBar.length
+
+    newBar.length = prevBar.length * lengthMult
+
+    newBar.angle = prevBar.angle + angleChange
+
+    newBar.lightness = lightness
+    
+    barArray.push(newBar)
+}
+
+var barArray = [{...baseBar}]
 
 var t1 = Date.now()
 var t2 = Date.now()
@@ -30,8 +47,22 @@ var t2 = Date.now()
 ctx.fillStyle = "black";
 ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
 
+var wholeTreeHue = 360 * Math.random()
 
-varonPageTimeElapsed = 0
+if (Math.random < .5) {
+    Lmult = .7 + Math.random() * .05 
+    Rmult = .5 + Math.random() * .25 
+} else {
+    Lmult = .5 + Math.random() * .25 
+    Rmult = .7 + Math.random() * .05 
+    
+}
+
+totRotation = 0
+totTranslation = 0
+totScale = 0
+
+var onPageTimeElapsed = 0
 // mainloop
 function MainLoop() {
 
@@ -42,23 +73,59 @@ function MainLoop() {
 
     t1 = Date.now()
 
+    
+
+    console.log(barArray.length)
+
     barArray.forEach(bar => {
+
+        
         ctx.beginPath();
         ctx.moveTo(bar.X, bar.Y);
 
         nx = bar.X + Math.cos(bar.angle) * bar.length * bar.percent
         ny = bar.Y + Math.sin(bar.angle) * bar.length * bar.percent
-        ctx.lineTo(nx, ny)
-        ctx.strokeStyle = `white`
-        ctx.stroke()
-        console.log(nx, ny)
-        bar.percent = 1
 
+        ctx.lineTo(nx, ny)
+        ctx.strokeStyle = `hsl(${wholeTreeHue}, 100%, ${bar.lightness}%)`
+
+        ctx.stroke()
+        
+        if (bar.percent < 1) {
+            bar.percent += bar.growFactor
+        } else if (bar.growFactor != 0) {
+            if (bar.lightness == 100) {
+
+                rand = Math.random()
+                if (rand < .5) {
+                    makeNewBar(bar,  Math.PI / 5, Lmult, bar.lightness)
+                    makeNewBar(bar, -Math.PI / 5, Rmult, bar.lightness * .8)
+                } else {
+                    makeNewBar(bar,  Math.PI / 5, Lmult, bar.lightness * .8)
+                    makeNewBar(bar, -Math.PI / 5, Rmult, bar.lightness)
+                }
+                
+            }
+            else {
+                makeNewBar(bar,  Math.PI / 5, Lmult, bar.lightness * .8)
+                makeNewBar(bar, -Math.PI / 5, Rmult, bar.lightness * .8)
+            }
+
+            bar.growFactor = 0
+        }
+        
     });
 
-    
-    
+    barArray = barArray.filter(bar => {
+        if (bar.length < 1)
+            return false
+        else 
+            return true
+    })
 
+
+    
+    t2 = Date.now()
 
     var frameTime = t2 - t1
     onPageTimeElapsed += frameTime + 10    
