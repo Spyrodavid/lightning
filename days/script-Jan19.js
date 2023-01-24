@@ -55,12 +55,15 @@ text = ["Hello World", "If I asked for help", "System Error", "Is this working?"
 
 ctx.putImageData(displaySave, 0, 0)
 
-onPageTimeElapsed = 0
+var onPageTimeElapsed = 0
 
 
 function MainLoop() {
 
     if (canvas.classList.contains("paused")) {
+        t1 = Date.now()
+        t2 = Date.now()
+        onPageTimeElapsed = 0
         setTimeout(MainLoop, 10)
         return
     }
@@ -72,7 +75,7 @@ function MainLoop() {
 
 
     ctx.drawImage(canvas, (Math.random() - .5) * onPageTimeElapsed / 500, (Math.random() - .5) *  onPageTimeElapsed / 500)
-
+    console.log(onPageTimeElapsed, "ON PAGE TIME ELAPSED")
 
     ctx.fillStyle = "black";
     ctx.font = "30px Arial";
@@ -93,8 +96,6 @@ function MainLoop() {
 
     var frameTime = t2 - t1
     onPageTimeElapsed += frameTime + 10
-
-    console.log(onPageTimeElapsed / 1000)
 
     setTimeout(MainLoop, 10)
 

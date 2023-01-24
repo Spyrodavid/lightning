@@ -53,7 +53,7 @@ const white = new Image()
 white.src = `images/ascend/White.png`
 
 
-imgOffset = 365
+imgOffset = 365 // lined up = 357
 
 var spawnerArray = []
 var baseSpawner = {
@@ -64,7 +64,7 @@ var baseSpawner = {
 
 spawnerArray.push(baseSpawner)
 
-onPageTimeElapsed = 0
+var onPageTimeElapsed = 0
 
 function MainLoop() {
 
@@ -119,7 +119,7 @@ function MainLoop() {
                 }
                 else {
                     ny = Math.floor(Math.random() * (y + 200) / 500)
-                    whiteSave.data[i] = noise.simplex3(x / 1000,y / 1000, onPageTimeElapsed / 10000) * 255
+                    whiteSave.data[i] =  noise.simplex3(x / 1000,y / 1000, onPageTimeElapsed / 10000) * 255
                 }
             }
 
@@ -138,12 +138,19 @@ function MainLoop() {
     spawnerArray.forEach(spawner => {
         spawner.imgPosArray.forEach(pos => {
             pos = Vector.add(pos, [Math.sin(onPageTimeElapsed / 1000) * 10, 0])
-
             ctx.drawImage(outline, spawner.pos.x + pos.x - 60, spawner.pos.y + pos.y)
+
+        })
+    })
+
+    spawnerArray.forEach(spawner => {
+        spawner.imgPosArray.forEach(pos => {
+            pos = Vector.add(pos, [Math.sin(onPageTimeElapsed / 1000) * 10, 0])
             ctx.drawImage(red, spawner.pos.x + pos.x - 60, spawner.pos.y + pos.y)
 
         })
     })
+
 
     
     /////////////
