@@ -38,7 +38,7 @@ function makeNewBar(prevBar, angleChange, lengthMult, lightness) {
     newBar.baseLightness = lightness
 
 
-    if (lightness == 100 && newBar.length < 9) {
+    if (lightness == 100 && newBar.length < 7) {
         transformFlag = true
         return
     }
@@ -117,8 +117,7 @@ function MainLoop() {
         
         
 
-        // * translationPercent)
-        console.log(whiteBar.angle)
+        
 
         translationPercent += .003
 
@@ -129,6 +128,14 @@ function MainLoop() {
 
             wholeTreeHue = 360 * Math.random()
 
+            if (Math.random() < .5) {
+                Lmult = .75 + Math.random() * .05 
+                Rmult = .5 + Math.random() * .25 
+            } else {
+                Lmult = .5 + Math.random() * .25 
+                Rmult = .75 + Math.random() * .05 
+            }
+
             newBar = {...baseBar}
 
             newBar.percent = 1
@@ -137,8 +144,6 @@ function MainLoop() {
         }
 
     }
-
-    console.log(barArray.length)
 
     
     barArray.forEach(bar => {
@@ -150,12 +155,22 @@ function MainLoop() {
             bar.lightness = bar.baseLightness * (1 - translationPercent)
         }
 
+        ctx.beginPath();
+
+        ctx.strokeStyle = `hsl(${wholeTreeHue}, 100%, ${bar.lightness}%)`
         for (let index = 0; index < 2; index++) {
+
+            ctx.setTransform(1, 0, 0, 1, 0, 0);
+
+            ctx.translate(width / 2, height)
+
+            ctx.rotate(-baseBar.angle * 2)
+
             if (transformFlag) {
         
                 var scaleFact = (baseBar.length / whiteBar.length)
                 
-                ctx.scale(1 + scaleFact * translationPercent ** 3, 1 + scaleFact * translationPercent ** 3)
+                ctx.scale(1 + scaleFact * translationPercent ** 4, 1 + scaleFact * translationPercent ** 4)
                 
                 ctx.rotate((Math.PI * .5 - whiteBar.angle ) * translationPercent ** 2)
         
@@ -163,21 +178,23 @@ function MainLoop() {
                 
             }
 
-            ctx.beginPath();
+            
             ctx.moveTo(bar.X , bar.Y);
 
             nx = bar.X + Math.cos(bar.angle) * bar.length * bar.percent
             ny = bar.Y + Math.sin(bar.angle) * bar.length * bar.percent
 
             ctx.lineTo(nx, ny)
-            ctx.strokeStyle = `hsl(${wholeTreeHue}, 100%, ${bar.lightness}%)`
+            
+
             ctx.setTransform(1, 0, 0, 1, 0, 0);
 
             ctx.translate(width / 2, height)
 
             ctx.rotate(-baseBar.angle * 2)
-            ctx.stroke()
+            
         }
+        ctx.stroke()
 
         if (bar.doneGrowing) {
             return
