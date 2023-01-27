@@ -5,6 +5,7 @@ var day = new dayCanvas(document.getElementById("canvas-Jan21"),
 const canvas = document.getElementById("canvas-Jan21");
 const ctx = canvas.getContext("2d");
 
+
 width = window.innerWidth
 height = window.innerHeight
 
@@ -13,13 +14,15 @@ canvas.height = height;
 
 
 var baseBar = {
-    X: width / 2,
-    Y: height,
-    angle: -Math.PI / 2,
+    X: 0,
+    Y: 0,
+    angle: Math.PI / 2,
     percent: 0,
-    growFactor: .01,
+    growFactor: .05, // .01
     length: height / 4,
-    lightness: 100
+    baseLightness: 100,
+    lightness: 100,
+    doneGrowing: false
 }
 
 function makeNewBar(prevBar, angleChange, lengthMult, lightness) {
@@ -32,7 +35,17 @@ function makeNewBar(prevBar, angleChange, lengthMult, lightness) {
 
     newBar.angle = prevBar.angle + angleChange
 
-    newBar.lightness = lightness
+    newBar.baseLightness = lightness
+
+
+    if (lightness == 100 && newBar.length < 9) {
+        transformFlag = true
+        return
+    }
+
+    if (lightness == 100) {
+        whiteBar = newBar
+    }
     
     barArray.push(newBar)
 }
@@ -49,18 +62,19 @@ ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
 
 var wholeTreeHue = 360 * Math.random()
 
-if (Math.random < .5) {
-    Lmult = .7 + Math.random() * .05 
+if (Math.random() < .5) {
+    Lmult = .75 + Math.random() * .05 
     Rmult = .5 + Math.random() * .25 
 } else {
     Lmult = .5 + Math.random() * .25 
-    Rmult = .7 + Math.random() * .05 
-    
+    Rmult = .75 + Math.random() * .05 
 }
 
-totRotation = 0
-totTranslation = 0
-totScale = 0
+translationPercent = 0
+
+var transformFlag = false
+
+var whiteBar = barArray[0]
 
 var onPageTimeElapsed = 0
 // mainloop
@@ -73,64 +87,138 @@ function MainLoop() {
 
     t1 = Date.now()
 
+    ctx.fillStyle = "black";
+    ctx.fillRect(-width / 2, 0, width, height);
+
+
+    // sets bottom center to 0,0
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+
+    ctx.translate(width / 2, height)
+
+    ctx.rotate(-baseBar.angle * 2)
+
     
+
+
+    if (transformFlag) {
+
+        barArray.forEach(bar => {
+            bar.doneGrowing = true
+        })
+
+        var scaleFact = (baseBar.length / whiteBar.length)
+        
+        ctx.scale(1 + scaleFact * translationPercent, 1 + scaleFact * translationPercent)
+        
+        ctx.rotate((Math.PI * .5 - whiteBar.angle ) * translationPercent)
+
+        ctx.translate(-whiteBar.X * translationPercent, -whiteBar.Y * translationPercent)
+        
+        
+
+        // * translationPercent)
+        console.log(whiteBar.angle)
+
+        translationPercent += .003
+
+        if (translationPercent > 1) {
+            translationPercent = 0
+
+            transformFlag = false
+
+            wholeTreeHue = 360 * Math.random()
+
+            newBar = {...baseBar}
+
+            newBar.percent = 1
+
+            barArray = [newBar]
+        }
+
+    }
 
     console.log(barArray.length)
 
+    
     barArray.forEach(bar => {
 
+
+        bar.lightness = bar.baseLightness
+
+        if (transformFlag && bar.lightness != 100) {
+            bar.lightness = bar.baseLightness * (1 - translationPercent)
+        }
+
+        for (let index = 0; index < 2; index++) {
+            if (transformFlag) {
         
-        ctx.beginPath();
-        ctx.moveTo(bar.X, bar.Y);
-
-        nx = bar.X + Math.cos(bar.angle) * bar.length * bar.percent
-        ny = bar.Y + Math.sin(bar.angle) * bar.length * bar.percent
-
-        ctx.lineTo(nx, ny)
-        ctx.strokeStyle = `hsl(${wholeTreeHue}, 100%, ${bar.lightness}%)`
-
-        ctx.stroke()
+                var scaleFact = (baseBar.length / whiteBar.length)
+                
+                ctx.scale(1 + scaleFact * translationPercent ** 3, 1 + scaleFact * translationPercent ** 3)
+                
+                ctx.rotate((Math.PI * .5 - whiteBar.angle ) * translationPercent ** 2)
         
-        if (bar.percent < 1) {
+                ctx.translate(-whiteBar.X * translationPercent, -whiteBar.Y * translationPercent)
+                
+            }
+
+            ctx.beginPath();
+            ctx.moveTo(bar.X , bar.Y);
+
+            nx = bar.X + Math.cos(bar.angle) * bar.length * bar.percent
+            ny = bar.Y + Math.sin(bar.angle) * bar.length * bar.percent
+
+            ctx.lineTo(nx, ny)
+            ctx.strokeStyle = `hsl(${wholeTreeHue}, 100%, ${bar.lightness}%)`
+            ctx.setTransform(1, 0, 0, 1, 0, 0);
+
+            ctx.translate(width / 2, height)
+
+            ctx.rotate(-baseBar.angle * 2)
+            ctx.stroke()
+        }
+
+        if (bar.doneGrowing) {
+            return
+        }
+        
+        if (! bar.doneGrowing) {
             bar.percent += bar.growFactor
-        } else if (bar.growFactor != 0) {
+        } 
+
+        if (bar.percent > 1) {
+            bar.percent = 1
+            bar.doneGrowing = true
+        
             if (bar.lightness == 100) {
 
-                rand = Math.random()
-                if (rand < .5) {
+                if (Math.random() < .5) {
                     makeNewBar(bar,  Math.PI / 5, Lmult, bar.lightness)
                     makeNewBar(bar, -Math.PI / 5, Rmult, bar.lightness * .8)
                 } else {
                     makeNewBar(bar,  Math.PI / 5, Lmult, bar.lightness * .8)
                     makeNewBar(bar, -Math.PI / 5, Rmult, bar.lightness)
                 }
-                
             }
             else {
                 makeNewBar(bar,  Math.PI / 5, Lmult, bar.lightness * .8)
                 makeNewBar(bar, -Math.PI / 5, Rmult, bar.lightness * .8)
             }
 
-            bar.growFactor = 0
+            
         }
         
     });
-
-    barArray = barArray.filter(bar => {
-        if (bar.length < 1)
-            return false
-        else 
-            return true
-    })
-
 
     
     t2 = Date.now()
 
     var frameTime = t2 - t1
-    onPageTimeElapsed += frameTime + 10    
+    // console.log(frameTime)
+    onPageTimeElapsed += Math.max(frameTime, 20)
 
-    setTimeout(MainLoop, 10)
+    setTimeout(MainLoop, 20 - frameTime)
 
 }
 MainLoop()
