@@ -7,21 +7,24 @@ const ctx = canvas.getContext("2d");
 
 
 
-canvas.width  = window.innerWidth;
-canvas.height = window.innerHeight;
+width = width
+height = height
+
+canvas.width  = width;
+canvas.height = height;
 
 // Set the fill style and color background
 ctx.fillStyle = "black";
-ctx.fillRect(0, 0, window.innerWidth, window.innerHeight)
+ctx.fillRect(0, 0, width, height)
 
 
 var baseCircle = {
-    X: window.innerWidth / 2,
-    Y: window.innerHeight / 2,
+    X: width / 2,
+    Y: height / 2,
     Hue: 192,
     Lightness: 45,
     previousCircle: null,
-    radius: window.innerHeight / 2,
+    radius: Math.min(height, width) / 2,
     speed: Math.PI / 60,
     angle: 0
 }
@@ -47,7 +50,7 @@ function MainLoop() {
     }
 
     ctx.fillStyle = "black";
-    ctx.fillRect(0, 0, window.innerWidth, window.innerHeight)
+    ctx.fillRect(0, 0, width, height)
 
     for (let i = 0; i < circleArray.length; i++) {
         circle = circleArray[i]

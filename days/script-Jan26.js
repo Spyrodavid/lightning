@@ -47,20 +47,20 @@ function MainLoop() {
     ctx.fillStyle = "white";
     ctx.fillRect(0, 0, window.innerWidth, window.innerHeight)
     
-    // nx += noise.simplex2(0, timeElapsed / 100000) * 2
-    // ny += noise.simplex2(1000, timeElapsed / 100000) * 2
-    
+
     noise.seed(noiseSeed)
 
-    charSize = 26
+    betweenSize = Math.floor(Math.min(width, height) * (25/ 577))
 
     characters = '9876543210123456789'
 
-    
-    for (let y = -100; y < height + 100; y += charSize ) {
-        for (let x = -100; x < width + 100; x += charSize) {
+    min = Math.min(width, height)
 
-            noiseVal = noise.simplex3(x / 1000, y / 1000, timeElapsed / 10000)
+    
+    for (let y = -40; y < height + 40; y += betweenSize) {
+        for (let x = -40; x < width + 40; x += betweenSize) {
+
+            noiseVal = noise.simplex3(x / min * .5, y / min * .5, timeElapsed / 10000)
 
             if (noiseVal > 0) {
                 ctx.fillStyle = `hsl(10, ${Math.abs(noiseVal) * 100}%, ${Math.abs(noiseVal) * 100}%)`
@@ -69,7 +69,7 @@ function MainLoop() {
                 ctx.fillStyle = `hsl(190, ${Math.abs(noiseVal) * 100}%, ${Math.abs(noiseVal) * 100}%)`
             }
             
-            ctx.font = "30px Arial";
+            ctx.font = `${Math.floor(betweenSize * 6/5)}px Arial`;
 
             char = characters[Math.floor(map(noiseVal, -1, 1, 0, characters.length))]
             ctx.fillText(char, x, y);
