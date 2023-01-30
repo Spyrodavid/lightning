@@ -63,9 +63,18 @@ for (let index = 0; index < 0; index++) {
     makeParticle(true)
 }  
 
-o = 5 + Math.random() * 10
+o = 2 + Math.random() * 20
+// low = two individual orbits
+// high = flat seperate wings
 p = 20 + Math.random() * 20
-b = 1/8 + Math.random() * 2
+// low = smaller flatter rings
+b = 1/8 + Math.random() * 2 
+// making this low makes a really thin long time needle
+// high = slow big rings
+
+// 5 60 2 big wings
+
+// .01 20 1/8 weird spiral shit
 
 
 ctx.translate(width / 2, height / 2)

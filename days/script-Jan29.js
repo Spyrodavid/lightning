@@ -11,6 +11,12 @@ height = window.innerHeight
 canvas.width  = width;
 canvas.height = height;
 
+coverLast = false
+canvas.addEventListener("click", () => {
+    coverLast = !coverLast
+    ctx.fillStyle = "black";
+    ctx.fillRect(0, 0, window.innerWidth, window.innerHeight)
+})
 
 var baseParticle = {
 pos: math.matrix([0, 1, 1]),
@@ -24,7 +30,7 @@ var particleArray = []
 
 // Set the fill style and color background
 ctx.fillStyle = "black";
-ctx.fillRect(0, 0, window.innerWidth, window.innerHeight)
+ctx.fillRect(- width / 2 , - height / 2, width, height)
 
 var noiseSeed = Math.random()
 
@@ -69,8 +75,10 @@ t1 = Date.now()
 
 let timeElapsed = t2 - programStart
 
-ctx.fillStyle = "white";
-ctx.fillRect(- width / 2 , - height / 2, width, height)
+if (coverLast) {
+	ctx.fillStyle = "white";
+	ctx.fillRect(- width / 2 , - height / 2, width, height)
+}
 
 particleArray.forEach(particle => {
 
@@ -109,10 +117,27 @@ particleArray.forEach(particle => {
     ctx.strokeStyle = `hsl(${particle.Hue}, 100%, ${particle.Lightness}%)`
     ctx.stroke()
 
+    
 
     
     
 })
+
+if (coverLast) {
+	const displaySave = ctx.getImageData(0, 0, width, height)
+	
+	i = 0
+	while(i < width * height * 4) {
+	    displaySave.data[i] = displaySave.data[i] - 1
+	    displaySave.data[i + 1] = displaySave.data[i + 1] - 1
+	    displaySave.data[i + 2] = displaySave.data[i + 2] - 1; // red
+	
+	    i += 4
+	    
+	}
+	
+	ctx.putImageData(displaySave, 0, 0)
+}
 
 t2 = Date.now()
 
