@@ -11,6 +11,15 @@ height = window.innerHeight
 canvas.width  = width;
 canvas.height = height;
 
+mouseDown = false
+
+canvas.addEventListener('mousedown', function() {
+    mouseDown = true;
+    });
+  
+canvas.addEventListener('mouseup', function() {
+    mouseDown = false;
+    });
 
 var baseParticle = {
     pos: math.matrix([0, 1, 1]),
@@ -88,6 +97,8 @@ function MainLoop() {
         return
     }
 
+ 
+
 
     t1 = Date.now()
     
@@ -99,7 +110,19 @@ function MainLoop() {
 
     angle += .01
 
+    if (mouseDown) {
+        if (particleArray.length < 1500) 
+        for (let index = 0; index < 5; index++) {
+            makeParticle()
+            
+        }
+    }
+
     particleArray.forEach(particle => {
+
+        if (isNaN(particle.pos.get([0]))) {
+            console.log("particle outside")
+        }
         
         
         Zrotate = math.matrix(  [[Math.cos(angle), -Math.sin(angle), 0],
@@ -122,7 +145,6 @@ function MainLoop() {
 
         translationMatrix = [0, 0, -25]
 
-        
 
         viewMatrix = particle.pos
 
@@ -130,10 +152,13 @@ function MainLoop() {
 
         viewMatrix = math.multiply(curRotate, viewMatrix)
 
-        
+        distance = 1 / (70 - viewMatrix.get([2])) * 100
+
+        ctx.strokeStyle = `hsl(${particle.Hue}, 100%, ${particle.Lightness}%)`
+
 
         ctx.beginPath();
-        ctx.moveTo(viewMatrix.get([0]) * 10 + 2, viewMatrix.get([1]) * 10);
+        ctx.moveTo(viewMatrix.get([0]) * 10 * distance, viewMatrix.get([1]) * distance * 10);
 
         if (!particle.static) {
 	        x = particle.pos.get([0])
@@ -160,12 +185,8 @@ function MainLoop() {
 
         viewMatrix = math.multiply(curRotate, viewMatrix)
 
-        ctx.lineTo(viewMatrix.get([0]) * 10, viewMatrix.get([1]) * 10);
-        ctx.strokeStyle = `hsl(${particle.Hue}, 100%, ${particle.Lightness}%)`
+        ctx.lineTo(viewMatrix.get([0])* distance * 10, viewMatrix.get([1])* distance * 10);
         ctx.stroke()
-
-
-        
         
     })
 
