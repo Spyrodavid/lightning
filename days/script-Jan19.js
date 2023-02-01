@@ -75,7 +75,7 @@ function MainLoop() {
 
 
     ctx.drawImage(canvas, (Math.random() - .5) * onPageTimeElapsed / 500, (Math.random() - .5) *  onPageTimeElapsed / 500)
-    console.log(onPageTimeElapsed, "ON PAGE TIME ELAPSED")
+    //console.log(onPageTimeElapsed, "ON PAGE TIME ELAPSED")
 
     ctx.fillStyle = "black";
     ctx.font = "30px Arial";

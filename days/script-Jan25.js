@@ -53,7 +53,6 @@ function MainLoop() {
     noise.seed(noiseSeed)
 
     min = Math.min(width / 100, height / 10)
-    console.log(min)
 
     
     for (let y = -100; y < height + 100; y += min ) {
@@ -93,7 +92,6 @@ function MainLoop() {
         newWord = word.slice(0, charIndex) + randomChar + word.slice(charIndex + 1, word.length)
 
         wordList[index] = newWord
-        console.log(wordList)
     }
 
     
