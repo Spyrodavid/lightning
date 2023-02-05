@@ -1,6 +1,3 @@
-var day = new dayCanvas(document.getElementById("canvas-Jan26"),
-    () => {
-
 const canvas = document.getElementById("canvas-Jan26");
 const ctx = canvas.getContext("2d");
 
@@ -11,11 +8,11 @@ canvas.width  = width;
 canvas.height = height;
 
 coverLast = true
-canvas.addEventListener("click", () => {
-    coverLast = !coverLast
-    ctx.fillStyle = "black";
-    ctx.fillRect(0, 0, window.innerWidth, window.innerHeight)
-})
+// canvas.addEventListener("click", () => {
+//     coverLast = !coverLast
+//     ctx.fillStyle = "black";
+//     ctx.fillRect(0, 0, window.innerWidth, window.innerHeight)
+// })
 
 // Set the fill style and color background
 ctx.fillStyle = "black";
@@ -37,13 +34,18 @@ Array.prototype.random = function () {
 
 wordList = ["HE", "LM", "COO"]
 
+// var capturer = new CCapture( { format: 'webm' } );
+// capturer.start()
 
-function MainLoop() {
+renderDone = false
+frames = 0
 
-    if (canvas.classList.contains("paused")) {
-        setTimeout(MainLoop, 10)
-        return
-    }
+maxframes = 1000
+
+
+function render() {
+
+    requestAnimationFrame(render);
 
     t1 = Date.now()
     var frameTime = t1 - t2
@@ -69,14 +71,14 @@ function MainLoop() {
     for (let y = -40; y < height + 40; y += betweenSize) {
         for (let x = -40; x < width + 40; x += betweenSize) {
 
-            noiseVal = noise.simplex3(x / min * .5, y / min * .5, timeElapsed / 10000)
+            noiseVal = noise.simplex3(x / min * .5, y / min * .5, Math.sin((frames / maxframes) * Math.PI * 2) )
 
             if (noiseVal > 0) {
                 ctx.fillStyle = `hsl(10, ${Math.abs(noiseVal) * 100}%, ${Math.abs(noiseVal) * 100}%)`
             }
             else {
                 ctx.fillStyle = `hsl(190, ${Math.abs(noiseVal) * 100}%, ${Math.abs(noiseVal) * 100}%)`
-            }
+            } 
             
             ctx.font = `${Math.floor(betweenSize * 6/5)}px helvetica`;
 
@@ -88,12 +90,20 @@ function MainLoop() {
     
     
 
-    setTimeout(MainLoop, 1)
+    // if (frames < 000) {
+    //     capturer.capture( canvas );
+    // } else if (!renderDone) {
+    //     console.log("RENDER DONE")
+    //     renderDone = true
+    //     capturer.stop()
+    //     capturer.save()
+    // }
+
+    frames ++
 
 }
-MainLoop()
-}   
-)
+render()
+
 
 canvasDayList.push(day)
 

@@ -1,7 +1,3 @@
-
-var day = new dayCanvas(document.getElementById("canvas-Jan28"),
-    () => {
-
 const canvas = document.getElementById("canvas-Jan28");
 const ctx = canvas.getContext("2d");
 
@@ -90,14 +86,16 @@ ctx.translate(width / 2, height / 2)
 
 angle = 0
 
-function MainLoop() {
+var capturer = new CCapture( { format: 'webm' } );
+capturer.start()
 
-    if (canvas.classList.contains("paused")) {
-        setTimeout(MainLoop, 10)
-        return
-    }
+renderDone = false
+frames = 0
 
- 
+function render(){
+	requestAnimationFrame(render);
+	// rendering stuff ...
+	
 
 
     t1 = Date.now()
@@ -193,15 +191,19 @@ function MainLoop() {
     t2 = Date.now()
 
     var frameTime = t2 - t1
-    //console.log(frameTime)
-    setTimeout(MainLoop, 10 - frameTime)
 
+    if (frames < 1000) {
+        capturer.capture( canvas );
+    } else if (!renderDone) {
+        console.log("RENDER DONE")
+        renderDone = true
+        capturer.stop()
+        capturer.save()
+    }
+
+    frames ++
 }
-MainLoop()
-}   
-)
-
-canvasDayList.push(day)
+render()
 
 function Dimension2to1(x, y, width) {
     return  Math.floor(x + y * width)
