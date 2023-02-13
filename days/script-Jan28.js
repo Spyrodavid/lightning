@@ -93,9 +93,7 @@ renderDone = false
 frames = 0
 
 function render(){
-	requestAnimationFrame(render);
-	// rendering stuff ...
-	
+	requestAnimationFrame(render);	
 
 
     t1 = Date.now()

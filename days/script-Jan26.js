@@ -42,6 +42,8 @@ frames = 0
 
 maxframes = 1000
 
+cylynderRadius = 0
+
 
 function render() {
 
@@ -71,7 +73,7 @@ function render() {
     for (let y = -40; y < height + 40; y += betweenSize) {
         for (let x = -40; x < width + 40; x += betweenSize) {
 
-            noiseVal = noise.simplex3(x / min * .5, y / min * .5, Math.sin((frames / maxframes) * Math.PI * 2) )
+            noiseVal = noise.simplex3(x / min * .5,  (cylynderRadius - y) * Math.sin((frames / maxframes) * Math.PI * 2), (cylynderRadius - x) * Math.cos((frames / maxframes) * Math.PI * 2) )
 
             if (noiseVal > 0) {
                 ctx.fillStyle = `hsl(10, ${Math.abs(noiseVal) * 100}%, ${Math.abs(noiseVal) * 100}%)`
@@ -90,7 +92,7 @@ function render() {
     
     
 
-    // if (frames < 000) {
+    // if (frames < 1000) {
     //     capturer.capture( canvas );
     // } else if (!renderDone) {
     //     console.log("RENDER DONE")
