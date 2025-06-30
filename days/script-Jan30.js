@@ -2,7 +2,7 @@ var day = new dayCanvas(document.getElementById("canvas-Jan30"),
     () => {
 
 const canvas = document.getElementById("canvas-Jan30");
-const ctx = canvas.getContext("2d");
+const ctx = canvas.getContext("2d", { willReadFrequently: true });
 
 width = window.innerWidth
 height = window.innerHeight
@@ -93,6 +93,9 @@ function MainLoop() {
             if (Math.random() < 0 + 2000 / onPageTimeElapsed) {
                 continue
             }
+
+                
+                
             i = Dimension2to1(x, y, width) * 4
 
 
