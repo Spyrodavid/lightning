@@ -55,12 +55,12 @@ function MainLoop() {
     noise.seed(noiseSeed)
 
     text = ["Welcome! This is January's website.",
-    " Heres a bunch of generative art I did in January.",
+    " Heres a bunch of algorithmic art I did in January.",
     " This Website is meant to be viewed on a laptop sized screen.",
     " (Specificially the size of my laptops screen)",
     " But other sizes may work",
     "\n",
-    " Double click to go to the next slide",
+    " Double click anywhere on screen to go to the next slide",
     " On some slides single clicking will do something",
     " (There is a secret code that you can enter to go to some extra content)"
     ]
